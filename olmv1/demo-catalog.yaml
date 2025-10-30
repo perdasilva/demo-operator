@@ -1,0 +1,9 @@
+apiVersion: olm.operatorframework.io/v1
+kind: ClusterCatalog
+metadata:
+  name: demo-catalog
+spec:
+  source:
+    type: Image
+    image:
+      ref: quay.io/olmtest/kubecon25/demo-catalog:v0.0.1

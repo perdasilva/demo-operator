@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-operator
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: demo-operator-installer
+  namespace: demo-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: demo-operator-installer-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: demo-operator-installer
+  namespace: demo-operator
+---
+apiVersion: olm.operatorframework.io/v1
+kind: ClusterExtension
+metadata:
+  name: demo-operator
+spec:
+  namespace: demo-operator
+  serviceAccount:
+    name: demo-operator-installer
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: demo-operator
+      selector:
+        matchLabels:
+          olm.operatorframework.io/metadata.name: demo-catalog
